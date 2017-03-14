@@ -1,0 +1,40 @@
+# [START add_project]
+swagger: "2.0"
+info:
+  description: "A simple Google Cloud Endpoints API example."
+  title: "Endpoints Example"
+  version: "1.0.0"
+host: "precisaser-1sti.appspot.com"
+# [END add_project]
+basePath: "/"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+schemes:
+- "http"
+paths:
+  "/":
+    get:
+      description: "Returns a Hello World message."
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Simple Hello World Message."
+          schema:
+            $ref: "#/definitions/echoMessage"
+  "/:name":
+    get:
+      description: "Returns greetings for the name given."
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Returns Hello, + given name"
+          schema:
+            $ref: "#/definitions/echoMessage"
+  echoMessage:
+    properties:
+      message:
+        type: "string"
