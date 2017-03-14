@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc. All Rights Reserved.
+# Copyright 2015 Google Inc. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,13 +18,12 @@ metadata:
   name: esp-echo
 spec:
   ports:
-    - port: 80
-      targetPort: 8080
-      protocol: TCP
-      name: http
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
   selector:
     app: esp-echo
-  # Change this type to NodePort if you use Minikube.
   type: LoadBalancer
 ---
 apiVersion: extensions/v1beta1
@@ -38,33 +37,18 @@ spec:
       labels:
         app: esp-echo
     spec:
-      # [START secret-1]
-      volumes:
-        - name: service-account-creds
-          secret:
-            secretName: service-account-creds
-      # [END secret-1]
-      # [START service]
       containers:
-        - name: esp
-          image: gcr.io/endpoints-release/endpoints-runtime:1
-          args: [
-            "-p", "8080",
-            "-a", "127.0.0.1:3000",
-            "-s", "SERVICE_NAME",
-            "-v", "SERVICE_CONFIG_ID",
-            "-k", "/etc/nginx/creds/service-account-creds.json",
-          ]
-      # [END service]
-          ports:
-            - containerPort: 8080
-          # [START secret-2]
-          volumeMounts:
-            - mountPath: /etc/nginx/creds
-              name: service-account-creds
-              readOnly: true
-          # [END secret-2]
-        - name: echo
-          image: lnlwd/endpoints-test:latest
-          ports:
-            - containerPort: 3000
+      - name: esp
+        image: gcr.io/endpoints-release/endpoints-runtime:1
+        args: [
+          "-p", "8080",
+          "-a", "127.0.0.1:3000",
+          "-s", "precisaser-1sti.appspot.com",
+          "-v", "2017-03-14r2",
+        ]
+        ports:
+          - containerPort: 8080
+      - name: endpoints-test
+        image: lnlwd/endpoints-test:latest
+        ports:
+          - containerPort: 3000
